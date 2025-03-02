@@ -1,0 +1,17 @@
+{
+    "name": "Max Mustermann",
+    "skills": ["TensorFlow", "React", "Firebase"],
+    "projects": [
+      {
+        "name": "KI-Chatbot",
+        "description": "Ein interaktiver Lebenslauf mit GPT-4",
+        "tech": ["OpenAI", "Firebase", "React"]
+      }
+    ],
+    "qa_pairs": [
+      {
+        "question_keywords": ["Erfahrung", "TensorFlow"],
+        "answer": "Ich habe 3 Jahre Erfahrung mit TensorFlow in Produktionsprojekten."
+      }
+    ]
+  }
