@@ -10,23 +10,16 @@ const ChatInterface = ({ token }) => {
   const handleSend = async () => {
     if (!message.trim()) return;
 
-      // User-Nachricht hinzufügen
-  const userMsg = { text: message, isBot: false };
-  setMessages(prev => [...prev, userMsg]);
-  setMessage('');
-
-  // Backend anfragen
-  const { reply } = await sendMessageToBot(token, message);
-
-  // Bot-Nachricht hinzufügen
-  setMessages(prev => [...prev, { text: reply, isBot: true }]);
-};
-
-
-    // Temporär: Simuliere eine Antwort, bis das Backend integriert ist
-    const newMessages = [...messages, { text: message, isBot: false }, { text: "Das ist eine Testantwort!", isBot: true }];
-    setMessages(newMessages);
+    // User-Nachricht hinzufügen
+    const userMsg = { text: message, isBot: false };
+    setMessages(prev => [...prev, userMsg]);
     setMessage('');
+
+    // Backend anfragen
+    const { reply } = await sendMessageToBot(token, message);
+    
+    // Bot-Nachricht hinzufügen
+    setMessages(prev => [...prev, { text: reply, isBot: true }]);
   };
 
   return (
