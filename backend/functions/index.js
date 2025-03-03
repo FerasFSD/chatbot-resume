@@ -1,19 +1,34 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+const cors = require("cors")({ origin: true }); // 👈 CORS bleibt
 
-const {onRequest} = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
+admin.initializeApp();
+const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG); // 👈 Nur wenn benötigt
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
-
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+exports.chat = functions.https.onRequest((req, res) => {
+    cors(req, res, async () => {
+      try {
+        const { token, message } = req.body;
+        
+        // 1. Budget prüfen
+        const userDoc = await admin.firestore().collection("users").doc(token).get();
+        if (!userDoc.exists || userDoc.data().remaining_credits <= 0) {
+          return res.status(403).json({ error: "Kein Budget oder ungültiger Token" });
+        }
+  
+        // 2. OpenAI-Anfrage (Beispiel)
+        const reply = "Testantwort vom Bot"; 
+  
+        // 3. Budget aktualisieren
+        await userDoc.ref.update({
+          remaining_credits: admin.firestore.FieldValue.increment(-1),
+          used_credits: admin.firestore.FieldValue.increment(1),
+        });
+  
+        res.json({ reply });
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+  });
+  
