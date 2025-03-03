@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import ChatInterface from './components/ChatInterface';
 
 function App() {
   return (
@@ -18,6 +20,20 @@ function App() {
           Learn React
         </a>
       </header>
+    </div>
+  );
+}
+
+export default App;
+
+function App() {
+  // Hol den Token aus der URL (z. B. ?token=recruiter_1)
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
+
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
+      <ChatInterface token={token} />
     </div>
   );
 }
