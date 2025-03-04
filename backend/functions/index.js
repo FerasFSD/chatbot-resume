@@ -2,7 +2,11 @@ const { onRequest } = require("firebase-functions/v2/https");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore, FieldValue } = require("firebase-admin/firestore");
 const cors = require("cors")({ origin: true });
+const OpenAI = require("openai");
 
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY, // API-Key aus Firebase-Umgebungsvariablen
+});
 initializeApp();
 const db = getFirestore();
 
